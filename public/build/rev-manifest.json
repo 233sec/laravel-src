@@ -1,0 +1,12 @@
+{
+  "css/backend-rtl.css": "css/backend-rtl-66ed05b546.css",
+  "css/backend.css": "css/backend-4bfc814999.css",
+  "css/frontend.css": "css/frontend-6ef8d01af9.css",
+  "css/rtl.css": "css/rtl-e7c0e98ea4.css",
+  "js/backend.js": "js/backend-12d5f68ae4.js",
+  "js/frontend.js": "js/frontend-d68564bd27.js",
+  "js/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css": "js/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css",
+  "js/vendor/select2/select2.min.css": "js/vendor/select2/select2.min.css",
+  "js/vendor/select2/select2-bootstrap.min.css": "js/vendor/select2/select2-bootstrap.min.css",
+  "css/backend/plugin/datatables/dataTables.bootstrap.min.css": "css/backend/plugin/datatables/dataTables.bootstrap.min.css"
+}
