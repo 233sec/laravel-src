@@ -53,7 +53,6 @@
         $('form button[type="submit"]').on('click',function (a) {
             $('.wysiwyg').each(function () {
                 var $ta = $(this); $ta.text(CKEDITOR.instances[$ta.attr('id')].getData());
-
             });
         });
     </script>

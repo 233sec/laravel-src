@@ -33,7 +33,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('exchange/search', 'ExchangeController@search')->name('frontend.user.exchange.search'); # 兑换列表 JSON
         Route::get('exchange/detail/{exchange_id}', 'ExchangeController@detail')->name('frontend.user.exchange.detail'); # 兑换详情
         Route::post('exchange/create', 'ExchangeController@create')->name('frontend.user.exchange.create'); # 兑换礼品提交
-
-        Route::post('api/file/upload', 'CommonController@upload')->name('common.file.upload');
     });
+
+    Route::get('api/file/upload/async', 'CommonController@uploadAsync')->name('common.file.upload.async');
+    Route::post('api/file/upload', 'CommonController@upload')->name('common.file.upload');
 });
+Route::get('api/file/upload/callback', 'CommonController@uploadCallback')->name('common.file.upload.callback');

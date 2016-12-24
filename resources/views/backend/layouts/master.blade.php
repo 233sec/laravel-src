@@ -82,41 +82,100 @@
                 }
             });
 
-            CKEDITOR.on('dialogDefinition', function (ev) {
-                var dialogName = ev.data.name;
-                var dialogDefinition = ev.data.definition;
-                var dialog = ev.data.definition.dialog;
-
-                if (dialogName == 'image') {
-                    dialog.on('show', function () {
-                        this.selectPage('Upload');
-                        this.hidePage('info');
-
-                        for (var i in dialogDefinition.contents) {
-                            var contents = dialogDefinition.contents[i];
-                            if (contents.id == "Upload") {
-                                window._rf = setInterval(function() {
-                                    if($('iframe.cke_dialog_ui_input_file').length){
-                                        clearInterval(window._rf);
-                                        $($('iframe.cke_dialog_ui_input_file')[0].contentWindow.document.body).find('input[name="upload"]')
-                                            .attr('name', 'file')
-                                            .attr('accpet', '.jpg,.png,.jpeg,.gif,,.bmp')
-                                            .on('change', function(){$(this).parent().submit();})
-                                            .css({width: '100%', height: '100%', outline: 0 })
-                                        .parent()
-                                            .attr('action', '{{ URL::route('common.file.upload', ["wysiwyg"=>1]) }}')
-                                            .append('<input type="hidden" name="_token" value="'+$('meta[name="_token"]').attr('content')+'">');
-                                    }
-                                }, 50);
-                            }
+            $.fn.upload_init = function(){
+                $.getJSON('{{ URL::route("common.file.upload.async") }}', function (json) {
+                    if(json.head.statusCode !== 0) return bootbox.alert('OSS 签名失败. 文件可能无法上传');
+                    window.file_upload_callback = function(j){return '//'+json.body.host+'/'+j.body.url+'image';};
+                    window.file_upload_url = json.body.host;
+                    window.file_upload_param = {
+                        OSSAccessKeyId: json.body.accessid,
+                        policy: json.body.policy,
+                        Signature: json.body.signature,
+                        key: json.body.dir + 'image',
+                        success_action_redirect: json.body.callback
+                    };
+                    $('.ajax-file').uploader({
+                        url: '//'+window.file_upload_url,
+                        data: window.file_upload_param,
+                        secureuri: true,
+                        filedName: 'file',
+                        dataType: 'json',
+                        minSize: 1,
+                        maxSize: 10*1024*1024,
+                        allowExt: {jpg: 1, png: 1, gif: 1, jpeg: 1, bmp: 1, rar: 1, zip: 1, '7z': 1, webp: 1, pdf: 1},
+                        beforeUpload: function(file, nonce, dom){
+                            $('#'+$(dom).attr('data-save-to')).val('上传中');
+                        },
+                        success: function(json, nonce, dom){
+                            $('#'+$(dom).attr('data-save-to')).val(window.file_upload_callback(json));
+                        },
+                        error: function(file, nonce, msg, dom){
+                            $('#'+$(dom).attr('data-save-to')).val('上传失敗');
                         }
                     });
-                    dialogDefinition.minHeight = 150;
-                }
-            });
-            window.file_upload_url = '{{ URL::route('common.file.upload') }}';
-            window.file_upload_callback = function(json){return json.data.url;};
-            window.file_upload_param = {_token: $('meta[name="_token"]').attr('content')};
+
+                    CKEDITOR.on('dialogDefinition', function (ev) {
+                            var dialogName = ev.data.name;
+                            var dialogDefinition = ev.data.definition;
+                            var dialog = ev.data.definition.dialog;
+
+                            if (dialogName == 'image') {
+                            dialog.on('show', function () {
+                                    this.selectPage('Upload');
+                                    this.hidePage('info');
+
+                                    for (var i in dialogDefinition.contents) {
+                                    var contents = dialogDefinition.contents[i];
+                                    if (contents.id == "Upload") {
+                                    window._rf = setInterval(function() {
+                                            if($('iframe.cke_dialog_ui_input_file').length){
+                                                clearInterval(window._rf);
+                                                if($('.wysiwyg_file_img').length == 0){
+                                                    $dom = $('<input/>');
+                                                    $dom.attr('type', 'file');
+                                                    $dom.addClass('wysiwyg_file_img');
+                                                    $dom.uploader({
+                                                        url: '//'+window.file_upload_url,
+                                                        data: window.file_upload_param,
+                                                        secureuri: true,
+                                                        filedName: 'file',
+                                                        dataType: 'json',
+                                                        minSize: 1,
+                                                        maxSize: 10*1024*1024,
+                                                        allowExt: {jpg: 1, png: 1, gif: 1, jpeg: 1, bmp: 1, rar: 1, zip: 1, '7z': 1, webp: 1, pdf: 1},
+                                                        beforeUpload: function(file, nonce, dom){
+                                                        },
+                                                        success: function(json, nonce, dom){
+                                                            url = window.file_upload_callback(json);
+                                                            CKEDITOR.dialog.getCurrent().getContentElement("info", "txtUrl").setValue(url);
+                                                            jQuery(".cke_dialog_ui_button_ok span").click();
+                                                        },
+                                                        error: function(file, nonce, msg, dom){
+                                                        }
+                                                    });
+                                                    $dom.css({
+                                                        background: '#666',
+                                                        width: '100%',
+                                                        height: '120px',
+                                                        display: 'block',
+                                                        'text-indent': '99999px'
+                                                    });
+
+                                                    $('iframe.cke_dialog_ui_input_file').after($dom);
+                                                    $('iframe.cke_dialog_ui_input_file,.cke_dialog_ui_fileButton,.cke_dialog_ui_labeled_label').hide();
+                                                }
+                                            }
+                                            }, 50);
+                                    }
+                                    }
+                            });
+                            dialogDefinition.minHeight = 150;
+                            }
+                    });
+
+                });
+            };
+
             window.wysiwyg_param = {
             };
             window.wysiwyg_init = function(dom){
