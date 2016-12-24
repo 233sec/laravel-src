@@ -4951,7 +4951,7 @@ tbody.collapse.in {
 }
 
 .breadcrumb>li+li:before {
-    content: "/Ãƒâ€šÃ‚Â ";
+    content: "/ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ";
     padding: 0 5px;
     color: #ccc
 }
@@ -9702,7 +9702,6 @@ body {
 .wrapper {
     min-height: 100%;
     position: relative;
-    overflow: hidden !important
 }
 
 .wrapper:after,.wrapper:before {
@@ -10091,11 +10090,11 @@ a:active,a:focus,a:hover {
     top: 0;
     left: 0;
     padding-top: 50px;
-    min-height: 100%;
+    /* min-height: 100%; */
     width: 230px;
     z-index: 810;
     transition: -webkit-transform .3s ease-in-out, width .3s ease-in-out;
-    transition: transform .3s ease-in-out, width .3s ease-in-out
+    transition: transform .3s ease-in-out, width .3s ease-in-out;
 }
 
 @media (max-width: 767px) {
@@ -17010,7 +17009,7 @@ input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus
 }
 
 .skin-black .wrapper,.skin-black .main-sidebar,.skin-black .left-side {
-    min-height: 100vh
+    min-height: 100vh;
 }
 
 .text-left {
