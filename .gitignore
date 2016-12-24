@@ -16,6 +16,5 @@ Homestead.yaml
 .phpcd
 .sw*
 .swp
-composer.lock
 tu.php
 resources/lang/vendor/log-viewer/th/
