@@ -156,7 +156,7 @@ return [
             'password_confirmation' => '确认密码',
             'old_password' => '旧密码',
             'new_password' => '新密码',
-            'new_password_confirmation' => '新密码确认',
+            'new_password_confirmation' => '确认',
         ],
     ],
 

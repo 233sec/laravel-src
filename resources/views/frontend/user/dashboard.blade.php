@@ -23,6 +23,14 @@
                                         <td>{{ $user->email }}</td>
                                     </tr>
                                     <tr>
+                                        <th>贡献</th>
+                                        <td>{{ $user->credit }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>安全币</th>
+                                        <td>{{ $user->reward }}</td>
+                                    </tr>
+                                    <tr>
                                         <th>{{ trans('labels.frontend.user.profile.created_at') }}</th>
                                         <td>{{ $user->created_at }} ({{ $user->created_at->diffForHumans() }})</td>
                                     </tr>

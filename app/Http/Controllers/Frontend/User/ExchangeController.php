@@ -60,11 +60,16 @@ class ExchangeController extends Controller
                 function($data){
                     # begin transaction
                     DB::beginTransaction();
+                    # Lock this user to prevent concurrency
+                    $user->lockForUpdate();
 
                     # get the id of goods, find (title/ price/ stock etc info)
                     $goods_id = $data['goods_id'] ?? 0;
                     if(0 == $goods_id) throw new \Exception('Please specific a goods_id', -1);
                     $goods = DB::table('goods')->where(['id'=>$goods_id])->first();
+                    # Lock this goods to prevent concurrency
+                    $goods->lockForUpdate();
+
                     $coin  = $goods->coin ?? -1;
                     $stock = $goods->stock ?? -1;
                     if($coin == -1) throw new \Exception('Goods price configuration error', -2);
@@ -78,7 +83,6 @@ class ExchangeController extends Controller
                     if($user->reward < 0) throw new \Exception('User coin balance error', -5);
                     if($user->reward < $coin) throw new \Exception('User coint balance is not enough to exchange', -6);
 
-                    $user->lockForUpdate();
                     # decrese user balance coin
                     $user->reward = bcsub($user->reward, $coin, 2);
                     # insert an exchange log -- return success, auto insert
@@ -88,9 +92,13 @@ class ExchangeController extends Controller
                     if(!$do) throw new \Exception('Decrese user balance failed'.var_export($do, 1), -6);
 
                     $antiXss = new AntiXSS();
-                    $data['receive_address'] = $antiXss->xss_clean($data['receive_address']);
-                    $data['receive_phone']   = $antiXss->xss_clean($data['receive_phone']);
                     $data['receive_name']    = $antiXss->xss_clean($data['receive_name']);
+                    $data['receive_phone']   = $antiXss->xss_clean($data['receive_phone']);
+                    $data['receive_address'] = $antiXss->xss_clean($data['receive_address']);
+
+                    if(!$data['receive_name'])      throw new \Exception('请填写收货人', -9);
+                    if(!$data['receive_phone'])     throw new \Exception('请填写收货人电话', -8);
+                    if(!$data['receive_address'])   throw new \Exception('请填写收货人地址', -7);
 
                     $return = [];
                     $return['id']       = null;
@@ -118,6 +126,7 @@ class ExchangeController extends Controller
 
             return $response;
         }catch(\Exception $e){
+            if(DB::getPdo()->inTransaction() == true) DB::rollBack();
             return \Response::json([
                 'head' => [
                     'statusCode' => $e->getCode(),

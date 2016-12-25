@@ -1,10 +1,9 @@
-@extends('backend.layouts.master')
+@extends('frontend.layouts.ucenter')
 
-@section('content')
-        <div class="box box-success">
-            <div class="box-header with-border">
-                <h3 class="box-title">{{ trans('labels.frontend.user.passwords.change') }}</h3>
-            </div>
+@section('panel')
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>{{ trans('labels.frontend.user.passwords.change') }}</h3>
 
             <div class="box-body">
                 <div class="form-group">
