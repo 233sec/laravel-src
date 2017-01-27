@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use DB;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DatatablesX;
 use Yajra\Datatables\Facades\Datatables;
 use Tsssec\Editable\Editable;
 
@@ -34,7 +35,7 @@ class HeroController extends Controller
         if ($m) $query = $query->whereBetween('vuls.created_at', [ date('Y-m-d H:i:s', strtotime($_GET['m'].'-01')), date('Y-m-d H:i:s', strtotime($_GET['m'].'-01 +1 month'))]);
 
         $query = $query->where('vuls.credit', '>', 0)->groupBy('vuls.user_id')->orderBy('vuls.credit', 'DESC');
-        return Datatables::queryBuilder($query)
+        return DatatablesX::queryBuilder($query)
         ->whitelist([])
         ->make(true);
     }

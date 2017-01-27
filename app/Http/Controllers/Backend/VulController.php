@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backend;
 use DB;
 use Response;
 use App\Http\Controllers\Controller;
-use Yajra\Datatables\Facades\Datatables;
+use App\Http\Controllers\DatatablesX;
 use Tsssec\Editable\Editable;
 use voku\helper\AntiXSS;
 
@@ -160,7 +160,7 @@ class VulController extends Controller
     }
 
     public function search() {
-        return Datatables::queryBuilder(
+        return DatatablesX::queryBuilder(
             DB::table('vuls')
             ->join('users', 'users.id', '=', 'vuls.user_id', 'left')
             ->select(['vuls.id', 'vuls.title', 'vuls.uuid', 'vuls.user_id', 'vuls.category', 'vuls.reward', 'vuls.credit',
@@ -174,7 +174,7 @@ class VulController extends Controller
     }
 
     public function searchComments($vul_id) {
-        return Datatables::queryBuilder(
+        return DatatablesX::queryBuilder(
             DB::table('vuls_comments')
             ->join('users', 'users.id', '=', 'vuls_comments.user_id', 'left')
             ->select(['vuls_comments.id', 'vuls_comments.user_id', 'users.name',

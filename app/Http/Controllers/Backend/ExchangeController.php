@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use DB;
 use Response;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DatatablesX;
 use Yajra\Datatables\Facades\Datatables;
 use Tsssec\Editable\Editable;
 
@@ -95,7 +96,7 @@ class ExchangeController extends Controller
     public function searchGoods()
     {
 
-        return Datatables::queryBuilder(
+        return DatatablesX::queryBuilder(
             DB::table('goods')
                 ->select([
                     'id',
@@ -124,7 +125,7 @@ class ExchangeController extends Controller
      */
     public function searchExchangeLog()
     {
-        return Datatables::queryBuilder(DB::table('exchanges')
+        return DatatablesX::queryBuilder(DB::table('exchanges')
             ->join('users', 'users.id', '=', 'exchanges.user_id', 'left')
             ->select([
                 'exchanges.id',

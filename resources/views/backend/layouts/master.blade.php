@@ -82,110 +82,33 @@
                 }
             });
 
-            $.fn.upload_init = function(){
-                $.getJSON('{{ URL::route("common.file.upload.async") }}', function (json) {
-                    if(json.head.statusCode !== 0) return bootbox.alert('OSS 签名失败. 文件可能无法上传');
-                    window.file_upload_callback = function(j){return '//'+json.body.host+'/'+j.body.url+'image';};
-                    window.file_upload_url = json.body.host;
-                    window.file_upload_param = {
-                        OSSAccessKeyId: json.body.accessid,
-                        policy: json.body.policy,
-                        Signature: json.body.signature,
-                        key: json.body.dir + 'image',
-                        success_action_redirect: json.body.callback
-                    };
-                    $('.ajax-file').uploader({
-                        url: '//'+window.file_upload_url,
-                        data: window.file_upload_param,
-                        secureuri: true,
-                        filedName: 'file',
-                        dataType: 'json',
-                        minSize: 1,
-                        maxSize: 10*1024*1024,
-                        allowExt: {jpg: 1, png: 1, gif: 1, jpeg: 1, bmp: 1, rar: 1, zip: 1, '7z': 1, webp: 1, pdf: 1},
-                        beforeUpload: function(file, nonce, dom){
-                            $('#'+$(dom).attr('data-save-to')).val('上传中');
-                        },
-                        success: function(json, nonce, dom){
-                            $('#'+$(dom).attr('data-save-to')).val(window.file_upload_callback(json));
-                        },
-                        error: function(file, nonce, msg, dom){
-                            $('#'+$(dom).attr('data-save-to')).val('上传失敗');
-                        }
-                    });
 
-                    CKEDITOR.on('dialogDefinition', function (ev) {
-                            var dialogName = ev.data.name;
-                            var dialogDefinition = ev.data.definition;
-                            var dialog = ev.data.definition.dialog;
-
-                            if (dialogName == 'image') {
-                            dialog.on('show', function () {
-                                    this.selectPage('Upload');
-                                    this.hidePage('info');
-
-                                    for (var i in dialogDefinition.contents) {
-                                    var contents = dialogDefinition.contents[i];
-                                    if (contents.id == "Upload") {
-                                    window._rf = setInterval(function() {
-                                            if($('iframe.cke_dialog_ui_input_file').length){
-                                                clearInterval(window._rf);
-                                                if($('.wysiwyg_file_img').length == 0){
-                                                    $dom = $('<input/>');
-                                                    $dom.attr('type', 'file');
-                                                    $dom.addClass('wysiwyg_file_img');
-                                                    $dom.uploader({
-                                                        url: '//'+window.file_upload_url,
-                                                        data: window.file_upload_param,
-                                                        secureuri: true,
-                                                        filedName: 'file',
-                                                        dataType: 'json',
-                                                        minSize: 1,
-                                                        maxSize: 10*1024*1024,
-                                                        allowExt: {jpg: 1, png: 1, gif: 1, jpeg: 1, bmp: 1, rar: 1, zip: 1, '7z': 1, webp: 1, pdf: 1},
-                                                        beforeUpload: function(file, nonce, dom){
-                                                        },
-                                                        success: function(json, nonce, dom){
-                                                            url = window.file_upload_callback(json);
-                                                            CKEDITOR.dialog.getCurrent().getContentElement("info", "txtUrl").setValue(url);
-                                                            jQuery(".cke_dialog_ui_button_ok span").click();
-                                                        },
-                                                        error: function(file, nonce, msg, dom){
-                                                        }
-                                                    });
-                                                    $dom.css({
-                                                        background: '#666',
-                                                        width: '100%',
-                                                        height: '120px',
-                                                        display: 'block',
-                                                        'text-indent': '99999px'
-                                                    });
-
-                                                    $('iframe.cke_dialog_ui_input_file').after($dom);
-                                                    $('iframe.cke_dialog_ui_input_file,.cke_dialog_ui_fileButton,.cke_dialog_ui_labeled_label').hide();
-                                                }
-                                            }
-                                            }, 50);
-                                    }
-                                    }
-                            });
-                            dialogDefinition.minHeight = 150;
-                            }
-                    });
-
-                });
+            $.xss = function(_data, _class, _tag, _attr){
+                if('undefined' === typeof _tag)_tag = 'span';
+                if('undefined' === typeof _attr)_attr = {};
+                if('undefined' === typeof _class)_class = '';
+                $dom = $('<'+_tag+'></'+_tag+'>');
+                $dom.attr('class', _class);
+                $dom.text(_data);
+                $dom.attr(_attr);
+                return $dom.get(0).outerHTML;
             };
 
+            Number.prototype.toDate = function(times){
+                if('undefined' == typeof times) times = 1;
+                x = this * 1 * times;
+                return new Date(x).toLocaleString();
+            };
+
+            window.file_upload_url = '{{ URL::route("common.file.upload") }}';
+            window.file_upload_callback = function(json){return json.data.url;};
+            window.file_upload_param = {_token: $('meta[name="_token"]').attr('content')};
             window.wysiwyg_param = {
+                customConfig: '{{ Cdn::asset('ckeditor/config.js') }}'
             };
             window.wysiwyg_init = function(dom){
                 $(dom).each(function(index, el) {
                     CKEDITOR.replace($(this)[0], window.wysiwyg_param);
-                });
-                $('form button').on('click', function(){
-                    for(id in CKEDITOR.instances){
-                        $('#'+id).val(CKEDITOR.instances[id].getData());
-                    }
                 });
             };
             window.datetime_init = function(dom){
@@ -197,6 +120,7 @@
                     });
                 });
             };
+            window._table_sdom = '<lrt"top"><"bottom"><"clear">';
             window._table_i18n = {
                 "sLengthMenu":"显示 _MENU_ 条记录",
                 "sZeroRecords":"没有检索到数据",
@@ -213,6 +137,8 @@
                 }
             };
 
+            $.queries = {!! json_encode($_GET)  !!};
+
             $.extend( true, $.fn.dataTable.defaults, {
                 sPaginationType: "full_numbers",
                 oLanguage: window._table_i18n,
@@ -223,19 +149,74 @@
                     var columns = this.api().settings().init().columns;
                     this.api().columns().every( function (index) {
                         var column = this;
-                        $('input,select', this.footer() ).val( data.columns[index].search.search );
-                        $('input,select', this.footer() ).on('keyup change', function () {
+                        var el = $(column.footer()).find('input,select');
+                        var id = $(column.footer()).find('input,select').attr('id');
+                        var v = data.columns[index].search.search;
+                        if('undefined' !== typeof id){
+                            try{
+                                q = id.match(/(select|input)[\_\-](\w+)/)[2];
+                                if('undefined' !== typeof $.queries[q]){
+                                    v = $.queries[q];
+                                }
+                            }catch(e){}
+                        }
+
+                        $(el).on('keyup change', function () {
                             if ($(this).val() == column.search()) return;
-                            column.search($(this).val(), false, false, true).draw();
+                            var v = $(this).val();
+                            var regex = false;
+                            var fullmatch = $(this).attr('data-fullmatch');
+                            if('undefined' !== typeof fullmatch && fullmatch * 1 > 0 && v.length > 0){
+                                v = '^' + v + '$';
+                                regex = true;
+                            }
+                            column.search(v, regex, false, true).draw();
                         } );
+
+                        var fullmatch = $(el).attr('data-fullmatch');
+                        if('undefined' !== typeof fullmatch && fullmatch * 1 > 0 && v.length > 0){
+                            try{
+                                v = v.match(/^\^(.*)\$$/)[1];
+                            }catch(e){}
+                        }
+                        $(el).val(v);
+                        setTimeout(function(){
+                            $(el).trigger('change');
+                        }, 100)
                     } );
                 }
             } );
 
+
             bootbox.setDefaults({  backdrop: true, escape: true});
-            $('input[type="file"]').uploader({
-                url: '{{ URL::route('common.file.upload') }}',
-                data: {_token: $('input[name="_token"]').val()},
+
+            $.getJSON('{{ URL::route("common.file.upload.async") }}', function (json) {
+                if(json.head.statusCode !== 0) return bootbox.alert('OSS 签名失败. 文件可能无法上传');
+                window._upload_pk = {
+                    host: json.body.host,
+                    policy: json.body.policy,
+                    signature: json.body.signature,
+                    accessid: json.body.accessid,
+                    dir: json.body.dir,
+                    callback: json.body.callback
+
+                };
+
+                window.file_upload_callback = function(j){return 'https://'+json.body.host+'/'+j.body.url+'image';};
+                window.file_upload_url = '//'+json.body.host;
+            });
+
+            window.file_upload_param = {
+                OSSAccessKeyId: function(){return window._upload_pk.accessid},
+                policy: function(){return window._upload_pk.policy},
+                Signature: function(){return window._upload_pk.signature},
+                key: function(uuid){ return window._upload_pk.dir + '-' + uuid + '.' + 'image'; },
+                success_action_redirect: function(uuid){ return window._upload_pk.callback + '-' + uuid + '.'; }
+            };
+
+            $('input[type="file"],.ajax-file').not('.ajax_initlized').addClass('ajax_initlized').uploader({
+                url: function(){return window.file_upload_url},
+                data: function(){return window.file_upload_param},
                 secureuri: true,
                 filedName: 'file',
                 dataType: 'json',
@@ -246,10 +227,78 @@
                     $(dom).parent().parent().find('#'+$(dom).attr('data-save-to')).val('上传中');
                 },
                 success: function(json, nonce, dom){
-                    $(dom).parent().parent().find('#'+$(dom).attr('data-save-to')).val(json.data.url);
+                    $(dom).parent().parent().find('#'+$(dom).attr('data-save-to')).val(window.file_upload_callback(json));
                 },
                 error: function(file, nonce, msg, dom){
                     $(dom).parent().parent().find('#'+$(dom).attr('data-save-to')).val('上传失敗');
+                }
+            });
+
+
+            CKEDITOR.on('dialogDefinition', function (ev) {
+                var editor = ev.editor;
+                var dialogName = ev.data.name;
+                var dialogDefinition = ev.data.definition;
+                var dialog = ev.data.definition.dialog;
+
+                if (dialogName == 'image') {
+                    dialog.on('show', function () {
+                        this.selectPage('Upload');
+                        this.hidePage('info');
+                        for (var i in dialogDefinition.contents) {
+                            var contents = dialogDefinition.contents[i];
+                            if (contents.id == "Upload") {
+                                window._rf = setInterval(function() {
+                                    if($('iframe.cke_dialog_ui_input_file').length){
+                                        clearInterval(window._rf);
+                                        if($('.wysiwyg_file_img:visible').length == 0){
+                                            $dom = $('<input/>');
+                                            $dom.attr({type:'file', multiple: true});
+                                            $dom.addClass('wysiwyg_file_img');
+                                            $dom.uploader({
+                                                url: function(){ return window.file_upload_url},
+                                                data: function(){ return window.file_upload_param},
+                                                secureuri: true,
+                                                filedName: 'file',
+                                                dataType: 'json',
+                                                minSize: 1,
+                                                maxSize: 10*1024*1024,
+                                                allowExt: {jpg: 1, png: 1, gif: 1, jpeg: 1, bmp: 1, rar: 1, zip: 1, '7z': 1, webp: 1, pdf: 1},
+                                                beforeUpload: function(file, nonce, dom){ },
+                                                success: function(json, nonce, dom){
+                                                    url = window.file_upload_callback(json);
+
+                                                    CKEDITOR.dialog.getCurrent() != null && CKEDITOR.dialog.getCurrent().hide();
+                                                    editor.insertHtml('<img src="'+url+'">');
+                                                },
+                                                error: function(file, nonce, msg, dom){
+                                                }
+                                            });
+                                            $dom.css({
+                                                background: '#666',
+                                                width: '100%',
+                                                height: '120px',
+                                                display: 'block',
+                                                'text-indent': '99999px'
+                                            });
+                                            $('iframe.cke_dialog_ui_input_file:visible').after($dom);
+                                            $('iframe.cke_dialog_ui_input_file:visible,.cke_dialog_ui_fileButton:visible,.cke_dialog_ui_labeled_label:visible').hide();
+                                        }
+                                    }
+                                }, 50);
+                            }
+                        }
+                    });
+                    dialogDefinition.minHeight = 150;
+                }
+            });
+
+            $('form button, form input[type="submit"]').on('click', function(){
+                for(id in CKEDITOR.instances){
+                    $(CKEDITOR.instances[id].element.$).val(CKEDITOR.instances[id].getData());
+                    $(CKEDITOR.instances[id].element.$).text(CKEDITOR.instances[id].getData());
+                    $('[id="'+id+'"]:enabled').val(CKEDITOR.instances[id].getData());
+                    $('[id="'+id+'"]:enabled').text(CKEDITOR.instances[id].getData());
                 }
             });
             $('body').on('DOMNodeInserted', 'table', function(){

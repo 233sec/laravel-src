@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Access\Role;
 
 use App\Models\Access\Role\Role;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DatatablesX;
 use Yajra\Datatables\Facades\Datatables;
 use App\Http\Requests\Backend\Access\Role\StoreRoleRequest;
 use App\Http\Requests\Backend\Access\Role\ManageRoleRequest;
@@ -52,7 +53,7 @@ class RoleController extends Controller
 	 */
 	public function get(ManageRoleRequest $request)
 	{
-		return Datatables::of($this->roles->getForDataTable())
+	return Datatables::of($this->roles->getForDataTable())
 			->addColumn('permissions', function($role) {
 				$permissions = [];
 

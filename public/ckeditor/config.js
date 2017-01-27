@@ -3,29 +3,26 @@
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
+
 CKEDITOR.editorConfig = function( config ) {
-	config.toolbarGroups = [
-		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
-		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
-		{ name: 'links' },
-		{ name: 'insert'},
-		{ name: 'uploadimage'},
-		{ name: 'forms' },
-		{ name: 'tools' },
-		{ name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
-		{ name: 'others' },
-		'/',
-		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-		{ name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
-		{ name: 'styles' },
-		{ name: 'colors' }
-	];
+  config.toolbar = [
+    { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
+    { name: 'editing', items: [ 'Find', 'Replace'] },  //, '-', 'SelectAll', '-', 'Scayt'
+    //{ name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
+    { name: 'document', items: ['Source', '-', 'Print', 'Maximize'] },
+    '/',
+    { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+    { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-',
+      'Outdent', 'Indent', '-',
+      'Blockquote', '-', // 'CreateDiv', '-',
+      'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'
+      ] },
+    { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+    { name: 'insert', items: [ 'Image', 'Table', 'Iframe', 'Flash' ] }, //, 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'
+    '/',
+    { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+    { name: 'colors', items: [ 'TextColor', 'BGColor' ] }
+  ];
 
-	config.removeButtons = 'Subscript,Superscript';
-
-	// Set the most common block elements.
-	config.format_tags = 'p;h1;h2;h3;pre';
-
-	// Simplify the dialog windows.
-	config.removeDialogTabs = 'image:advance;image:Link';
+  config.removeDialogTabs = 'image:advance;image:Link';
 };

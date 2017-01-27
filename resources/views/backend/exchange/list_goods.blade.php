@@ -36,13 +36,13 @@
                     </thead>
                     <tfoot>
                         <tr>
-                            <th><input type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 ID"></th>
+                            <th><input data-fullmatch="1" type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 ID"></th>
                             <th><input type="text" class="form-control input-sm" style="width: 100px" placeholder="筛 名称"></th>
-                            <th><input type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 类型"></th>
+                            <th><input data-fullmatch="1" type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 类型"></th>
                             <th><input type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 成本"></th>
                             <th><input type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 兑换价"></th>
-                            <th><input type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 库存"></th>
-                            <th><input type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 历史库存"></th>
+                            <th><input data-fullmatch="1" type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 库存"></th>
+                            <th><input data-fullmatch="1" type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 历史库存"></th>
                             <th></th>
                             <th></th>
                         </tr>

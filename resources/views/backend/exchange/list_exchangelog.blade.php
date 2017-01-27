@@ -39,16 +39,16 @@
                     </thead>
                     <tfoot>
                         <tr>
-                            <th><input type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 ID"></th>
+                            <th><input data-fullmatch="1" type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 ID"></th>
                             <th><input type="text" class="form-control input-sm" style="width: 60px" placeholder="筛 商品类型"></th>
                             <th><input type="text" class="form-control input-sm" style="width: 60px" placeholder="筛 商品名字"></th>
-                            <th><input type="text" class="form-control input-sm" style="width: 60px" placeholder="筛 用户"></th>
+                            <th><input data-fullmatch="1" type="text" class="form-control input-sm" style="width: 60px" placeholder="筛 用户"></th>
                             <th><input type="text" class="form-control input-sm" style="width: 60px" placeholder="筛 收件人电话"></th>
                             <th><input type="text" class="form-control input-sm" style="width: 60px" placeholder="筛 收件人"></th>
                             <th><input type="text" class="form-control input-sm" style="width: 90px" placeholder="筛 收货地址"></th>
                             <th><input type="text" class="form-control input-sm" style="width: 90px" placeholder="筛 单号"></th>
-                            <th><input type="text" class="form-control input-sm" style="width: 90px" placeholder="筛 消耗积分"></th>
-                            <th><select id="filter_exchanges_status" class="form-control input-sm" style="width: 55px" placeholder="筛 订单状态"></select></th>
+                            <th><input data-fullmatch="1" type="text" class="form-control input-sm" style="width: 90px" placeholder="筛 消耗积分"></th>
+                            <th><select data-fullmatch="1" id="filter_exchanges_status" class="form-control input-sm" style="width: 55px" placeholder="筛 订单状态"></select></th>
                             <th></th>
                             <th></th>
                         </tr>

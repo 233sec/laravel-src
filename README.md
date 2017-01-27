@@ -52,6 +52,16 @@ su
 echo "\n" >> /etc/hosts
 echo "127.0.0.1 security.233sec.com" >> /etc/hosts
 ```
+
+# 启动 HTTP 服务
+```shell
+vendor/bin/start-laravelfly-server #如果已安装swoole扩展(https://github.com/swoole/swoole-src/)
+```
+ 或
+ ```shell
+ php artisan serve
+ ```
+
 通过 http://security.233sec.com 访问本地环境
 
 如果发布生产, 正式使用, 务必做以下工作:

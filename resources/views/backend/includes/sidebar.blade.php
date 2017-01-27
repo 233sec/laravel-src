@@ -2,7 +2,7 @@
     <section class="sidebar">
         <div class="user-panel">
             <div class="pull-left image">
-                <img onclick="location.href='{{ URL::route('frontend.user.dashboard') }}';" src="//it68-file-alimmdn-com.alikunlun.com/FjcbrvYNWHGA354YawXt06hnl4yA" class="img-circle" alt="User Image" />
+                <img onclick="location.href='{{ URL::route('frontend.user.dashboard') }}';" src="/img/avatar.png" class="img-circle" alt="User Image" />
                 </a>
             </div>
             <div class="pull-left info">

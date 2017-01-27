@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Frontend\User;
 
 use DB;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DatatablesX;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 use Response;
@@ -25,7 +26,7 @@ class ExchangeController extends Controller
     }
 
     public function search() {
-        return Datatables::queryBuilder(
+        return DatatablesX::queryBuilder(
             DB::table('exchanges')
             ->join('goods', 'goods.id', '=', 'exchanges.goods_id', 'left')
             ->select([

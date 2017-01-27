@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use DB;
 use Response;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DatatablesX;
 use Yajra\Datatables\Facades\Datatables;
 use Tsssec\Editable\Editable;
 
@@ -27,7 +28,7 @@ class ArticleController extends Controller
      */
     public function search()
     {
-        return Datatables::queryBuilder( DB::table('articles'))
+        return DatatablesX::queryBuilder( DB::table('articles'))
         ->make(true);
     }
 

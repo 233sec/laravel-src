@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use DB;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DatatablesX;
 use Yajra\Datatables\Facades\Datatables;
 use Tsssec\Editable\Editable;
 
@@ -24,7 +25,7 @@ class ArticleController extends Controller
      * @return \Illuminate\View\View
      */
     public function search() {
-        return Datatables::queryBuilder(
+        return DatatablesX::queryBuilder(
             DB::table('articles')
             ->select(['id', 'title', 'cover_img', 'created_at'])
         )

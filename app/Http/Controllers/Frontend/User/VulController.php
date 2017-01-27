@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Frontend\User;
 
 use DB;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DatatablesX;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 use Response;
@@ -168,7 +169,7 @@ class VulController extends Controller
     }
 
     public function search() {
-        return Datatables::queryBuilder(
+        return DatatablesX::queryBuilder(
             DB::table('vuls')
             ->join('users', 'users.id', '=', 'vuls.user_id', 'left')
             ->select(['vuls.id', 'vuls.title', 'vuls.uuid', 'vuls.user_id', 'vuls.content', 'vuls.category', 'vuls.reward', 'vuls.credit',
@@ -185,7 +186,7 @@ class VulController extends Controller
     }
 
     public function searchComments($vul_id) {
-        return Datatables::queryBuilder(
+        return DatatablesX::queryBuilder(
             DB::table('vuls_comments')
             ->join('users', 'users.id', '=', 'vuls_comments.user_id', 'left')
             ->join('vuls', 'vuls.id', '=', 'vuls_comments.vul_id', 'left')

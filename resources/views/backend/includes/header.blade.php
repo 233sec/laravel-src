@@ -13,13 +13,13 @@
 
                 <li class="dropdown user user-menu">
                     <a class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="//it68-file-alimmdn-com.alikunlun.com/FjcbrvYNWHGA354YawXt06hnl4yA" class="user-image" alt="User Avatar"/>
+                        <img src="/img/avatar.png" class="user-image" alt="User Avatar"/>
                         <span class="hidden-xs">{{ access()->user()->name }}</span>
                     </a>
 
                     <ul class="dropdown-menu">
                         <li class="user-header">
-                            <img onclick="location.href='{{ URL::route('frontend.user.dashboard') }}';" src="//it68-file-alimmdn-com.alikunlun.com/FjcbrvYNWHGA354YawXt06hnl4yA" class="img-circle" style="width: 90px; height: 90px; border: 0" />
+                            <img onclick="location.href='{{ URL::route('frontend.user.dashboard') }}';" src="/img/avatar.png" class="img-circle" style="width: 90px; height: 90px; border: 0" />
                             <p>
                                 {{ access()->user()->name }} - {{ implode(", ", access()->user()->roles->lists('name')->toArray()) }}
                                 <small>{{ trans('strings.backend.general.member_since') }} {{ access()->user()->created_at->format("m/d/Y") }}</small>
