@@ -199,7 +199,6 @@
                     accessid: json.body.accessid,
                     dir: json.body.dir,
                     callback: json.body.callback
-
                 };
 
                 window.file_upload_callback = function(j){return 'https://'+json.body.host+'/'+j.body.url+'image';};
