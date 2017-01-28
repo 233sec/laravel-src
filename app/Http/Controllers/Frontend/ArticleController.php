@@ -28,6 +28,9 @@ class ArticleController extends Controller
         return DatatablesX::queryBuilder(
             DB::table('articles')
             ->select(['id', 'title', 'cover_img', 'created_at'])
+            ->whereIn('status', [1, 2])
+            ->orderBy('status', 'desc')
+            ->orderBy('created_at', 'desc')
         )
         ->whitelist(['id'])
         ->make(true);
