@@ -14,12 +14,8 @@
 
         @yield('before-styles-end')
         {{ Html::style(Cdn::asset('css/frontend/app.css')) }}
-        {{ Html::style(Cdn::asset('css/backend/plugin/datatables/dataTables.bootstrap.min.css')) }}
         @langRTL
             {!! Html::style(Cdn::elixir('css/rtl.css')) !!}
-        @endif
-        @if (false)
-            {{ Html::style(Cdn::asset('css/backend/plugin/datatables/dataTables.bootstrap.min.css')) }}
         @endif
         @yield('after-styles-end')
         <style>

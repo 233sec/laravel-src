@@ -11,6 +11,10 @@
                             'select',
                             config('app.vul.status_text')
                         ],
+                        'emergency'=>[
+                            'select',
+                            config('app.vul.emergency_text')
+                        ],
                         'category'=>[
                             'select',
                             config('app.vul.category_text')
