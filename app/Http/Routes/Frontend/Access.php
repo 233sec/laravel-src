@@ -24,9 +24,6 @@ Route::group(['namespace' => 'Auth'], function () {
      */
     Route::group(['middleware' => 'guest'], function () {
 
-        Route::get('test', 'TestController@test')->name('auth.test');
-        Route::get('test/search', 'TestController@search')->name('auth.test.search');
-
         Route::get('pay', 'PayController@test')->name('auth.pay');
 
         // Authentication Routes
