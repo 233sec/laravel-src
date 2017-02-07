@@ -38,7 +38,9 @@
                         <li><a href="{{ URL::Route('frontend.user.vul.list') }}">我提交的漏洞</a></li>
                         <li><a href="{{ URL::Route('frontend.user.exchange.list') }}">我的订单</a></li>
                         <li><a href="{{ URL::Route('frontend.user.profile.edit') }}">个人资料</a></li>
+                        @permission('admin.dashboard')
                         <li><a href="{{ URL::Route('admin.dashboard') }}">后台</a></li>
+                        @endauth
                         <li class="divider"></li>
                         <li>{{ link_to_route('auth.logout', trans('navs.general.logout')) }}</li>
                     </ul>
