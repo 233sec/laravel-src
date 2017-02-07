@@ -210,7 +210,7 @@
                 policy: function(){return window._upload_pk.policy},
                 Signature: function(){return window._upload_pk.signature},
                 key: function(uuid){ return window._upload_pk.dir + '-' + uuid + '.' + 'image'; },
-                success_action_redirect: function(uuid){ return window._upload_pk.callback + '-' + uuid + '.'; }
+                success_action_redirect: function(uuid){return window._upload_pk.callback + '-' + uuid + '.'; }
             };
 
             $('input[type="file"],.ajax-file').not('.ajax_initlized').addClass('ajax_initlized').uploader({

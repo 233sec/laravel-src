@@ -38,7 +38,7 @@ class CommonController extends Controller {
         $endpoint   = getenv('OSS_ENDPOINT');
         $file_name  = date('Y') . date('m') . substr(mt_rand(100000, 999999), 1) . md5(microtime(true)) . '.';
         $dir        = '';
-        $redirect   = route('common.file.upload.callback', ['status' => 0, 'file' => $file_name, '_token' => csrf_token() ]);
+        $redirect   = route('common.file.upload.callback', ['_token' => csrf_token(), 'status' => 0, 'file' => $file_name]);
 
         $policy = [
             'expiration' => date('Y-m-d\TH:i:s.000\Z', time() + 1800),

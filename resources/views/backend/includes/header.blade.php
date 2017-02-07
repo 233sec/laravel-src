@@ -1,7 +1,7 @@
 <header class="main-header">
     <a href="{{ URL::route('admin.dashboard') }}" class="logo">
       <span class="logo-mini"><b>L</b>S</span>
-      <span class="logo-lg"><b>LARAVEL</b>SRC</span>
+      <span class="logo-lg"><b>LARAVEL</b><span>SRC</span></span>
     </a>
     <nav class="navbar navbar-static-top" role="navigation">
         <a href="javascript:;" class="sidebar-toggle" data-toggle="offcanvas" role="button">
