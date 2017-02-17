@@ -94,7 +94,7 @@
                       $v = $('<div></div>');
 
                       $c.css({'padding-right': '18px'});
-                      if(a.goods_img)$d.attr('src', a.goods_img);
+                      if(a.goods_img)$d.attr('src', a.goods_img + '?x-oss-process=image/resize,m_fill,h_128,w_128');
                       $x.text(a.created_at);
                       $f.text(a.goods_name);
                       $g.text(a.receive_name);
