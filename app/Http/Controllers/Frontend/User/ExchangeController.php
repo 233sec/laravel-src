@@ -62,14 +62,18 @@ class ExchangeController extends Controller
                     # begin transaction
                     DB::beginTransaction();
                     # Lock this user to prevent concurrency
-                    $user->lockForUpdate();
+                    $user = auth()->user();
+
+                    $user_list = DB::table('users')->where(['id'=>$user->getAuthIdentifier()]);
+                    $user_list->lockForUpdate();
 
                     # get the id of goods, find (title/ price/ stock etc info)
                     $goods_id = $data['goods_id'] ?? 0;
                     if(0 == $goods_id) throw new \Exception('Please specific a goods_id', -1);
-                    $goods = DB::table('goods')->where(['id'=>$goods_id])->first();
+                    $goods_list = DB::table('goods')->where(['id'=>$goods_id]);
                     # Lock this goods to prevent concurrency
-                    $goods->lockForUpdate();
+                    $goods_list->lockForUpdate();
+                    $goods = $goods_list->first();
 
                     $coin  = $goods->coin ?? -1;
                     $stock = $goods->stock ?? -1;
@@ -77,7 +81,6 @@ class ExchangeController extends Controller
                     if($stock == -1) throw new \Exception('Goods stock configuration error', -3);
                     if($stock < 1) throw new \Exception('Goods stock is not enough', -4);
 
-                    $user = auth()->user();
                     $user_id = $user->getAuthIdentifier();
                     if(!$user_id) throw new \Exception('User info error', -990);
                     # check if the user balance is enough to exchang this goods
@@ -123,6 +126,7 @@ class ExchangeController extends Controller
             ->ready(function($vul_detail){
                 return view('frontend.user.vul.detail', ['vul_detail' => $vul_detail, 'vul_id' => 0]);
             });
+            echo 'xxxx';
             if(DB::getPdo()->inTransaction() == true) DB::commit();
 
             return $response;
@@ -131,7 +135,7 @@ class ExchangeController extends Controller
             return \Response::json([
                 'head' => [
                     'statusCode' => $e->getCode(),
-                    'note' => $e->getMessage()
+                    'note' => $e->getMessage() . '|' . $e->getLine()
                 ],
                 'body' => new \stdClass()
             ]);
