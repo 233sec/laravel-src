@@ -46,8 +46,8 @@
                             <td><input data-fullmatch="1" type="text" class="form-control input-sm" style="width: 60px;" placeholder="REWARD"></td>
                             <td><input data-fullmatch="1" type="text" class="form-control input-sm" style="width: 60px;" placeholder="CREDIT"></td>
                             <td><select class="form-control input-sm" id="filter_status" style="width: 50px;"></select></td>
-                            <td><input type="text" class="form-control input-sm" style="width: 60px;" placeholder="CREATED_AT"></td>
-                            <td><input type="text" class="form-control input-sm" style="width: 60px;" placeholder="UPDATED_AT"></td>
+                            <td><input type="text" class="form-control input-sm date-range" data-fullmatch="1" style="width: 70px;" placeholder=""></td>
+                            <td><input type="text" class="form-control input-sm date-range" data-fullmatch="1" style="width: 70px;" placeholder=""></td>
                             <td></th>
                         </tr>
                     </tfoot>

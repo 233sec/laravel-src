@@ -41,7 +41,7 @@
                             <th><input type="text" class="form-control input-sm" style="width: 100px" placeholder="筛 URL自定义"></th>
                             <th><input type="text" class="form-control input-sm" style="width: 100px" placeholder="筛 标签"></th>
                             <th><select id="filter_status" class="form-control input-sm" style="width: 60px" placeholder="筛 状态"></select></th>
-                            <th><input type="text" class="form-control input-sm" style="width: 100px" placeholder="筛 创建于"></th>
+                            <td><input type="text" class="form-control input-sm datetime-range" data-fullmatch="1" style="width: 130px;" placeholder=""></td>
                             <th></th>
                         </tr>
                     </tfoot>

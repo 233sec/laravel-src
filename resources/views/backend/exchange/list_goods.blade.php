@@ -43,7 +43,7 @@
                             <th><input type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 兑换价"></th>
                             <th><input data-fullmatch="1" type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 库存"></th>
                             <th><input data-fullmatch="1" type="text" class="form-control input-sm" style="width: 40px" placeholder="筛 历史库存"></th>
-                            <th></th>
+                            <td><input type="text" class="form-control input-sm datetime-range" data-fullmatch="1" style="width: 130px;" placeholder=""></td>
                             <th></th>
                         </tr>
                     </tfoot>

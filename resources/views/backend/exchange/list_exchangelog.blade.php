@@ -49,7 +49,7 @@
                             <th><input type="text" class="form-control input-sm" style="width: 90px" placeholder="筛 单号"></th>
                             <th><input data-fullmatch="1" type="text" class="form-control input-sm" style="width: 90px" placeholder="筛 消耗积分"></th>
                             <th><select data-fullmatch="1" id="filter_exchanges_status" class="form-control input-sm" style="width: 55px" placeholder="筛 订单状态"></select></th>
-                            <th></th>
+                            <td><input type="text" class="form-control input-sm date-range" data-fullmatch="1" style="width: 70px;" placeholder=""></td>
                             <th></th>
                         </tr>
                     </tfoot>

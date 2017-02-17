@@ -17,6 +17,7 @@
         {{ Html::style(Cdn::asset('css/backend/app.css')) }}
         {{ Html::style(Cdn::asset('css/backend/plugin/datatables/dataTables.bootstrap.min.css')) }}
         {{ Html::style(Cdn::asset('js/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')) }}
+        {{ Html::style(Cdn::asset('css/backend/plugin/daterangepicker/daterangepicker.css')) }}
         {{ Html::style(Cdn::asset('js/vendor/select2/select2.min.css')) }}
         {{ Html::style(Cdn::asset('js/vendor/select2/select2-bootstrap.min.css')) }}
         {{ Html::style(Cdn::asset('js/vendor/bootstrap-tagsinput/bootstrap-tagsinput.css')) }}
@@ -66,12 +67,18 @@
         {{ Html::script(Cdn::asset('js/vendor/bootbox/bootbox.min.js')) }}
         {{ Html::script(Cdn::asset('js/vendor/moment/moment-with-locales.min.js')) }}
         {{ Html::script(Cdn::asset('js/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')) }}
+        {{ Html::script(Cdn::asset('js/vendor/daterangepicker/daterangepicker.js')) }}
         {{ Html::script(Cdn::asset('ckeditor/ckeditor.js')) }}
         {{ Html::script(Cdn::asset('js/vendor/select2/select2.min.js')) }}
         {{ Html::script(Cdn::asset('js/vendor/bootstrap-tagsinput/bootstrap-tagsinput.min.js')) }}
         {{ Html::script(Cdn::asset('js/vendor/parsley/parsley.min.js')) }}
         {{ Html::script(Cdn::asset('js/vendor/sortable/Sortable.min.js')) }}
         {{ Html::script(Cdn::asset('js/vendor/ajaxfileuploader/ajaxfileuploader.min.js')) }}
+        <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+
+
         <script type="text/javascript">
             $(".sidebar-toggle").on("click",function(){setTimeout(function(){$("body").hasClass("sidebar-collapse")?document.cookie="bodyClass=sidebar-collapse; path=/;":document.cookie="bodyClass=sidebar-uncollapse; path=/;"},500)});
 
@@ -139,10 +146,52 @@
 
             $.queries = {!! json_encode($_GET)  !!};
 
+            window._pause_datatables = 0;
+
+            $('.date-range,.datetime-range,.datestamp-range,.datetimestamp-range').each(function(){
+                // date-range 日期段检索
+                // datetime-range 日期时间段检索
+                // datestamp-range 日期戳段检索
+                // datetimestamp-range 日期时间戳端检索
+
+                format = 'YYYY/MM/DD';
+                if($(this).hasClass('datetime-range')) format = 'YYYY/MM/DD HH:mm:ss';
+                else if($(this).hasClass('datestamp-range') || $(this).hasClass('datetimestamp-range')) format = 'X';
+                $(this).daterangepicker({
+                    locale: {
+                        applyLabel: '应用',
+                        cancelLabel: '清除',
+                        monthNames: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+                        daysOfWeek: ['日','一','二','三','四','五','六'],
+                        format: format
+                    }
+                }).on('show.daterangepicker', function(ev, picker){
+                    window._pause_datatables = 1;
+                    window._pause_range_old_value = $(this).val();
+                }).on('hide.daterangepicker', function(ev, picker){
+                    window._pause_datatables = 0;
+                    if(false == ($(event.target).hasClass('applyBtn') || $(event.target).hasClass('cancelBtn'))){
+                        $(this).val(window._pause_range_old_value);
+                    }
+                }).on('apply.daterangepicker', function(ev, picker) {
+                    window._pause_datatables = 0;
+                    format = 'YYYY/MM/DD';
+                    if($(this).hasClass('datetime-range')) format = 'YYYY/MM/DD HH:mm:ss';
+                    else if($(this).hasClass('datestamp-range') || $(this).hasClass('datetimestamp-range')) format = 'X';
+                    $(this).val(picker.startDate.format(format) + ' - ' + picker.endDate.format(format)).trigger('change');
+                }).on('cancel.daterangepicker', function(ev, picker) {
+                    window._pause_datatables = 0;
+                    $(this).val('').trigger('change');
+                });
+            });
+
             $.extend( true, $.fn.dataTable.defaults, {
                 sPaginationType: "full_numbers",
+                aLengthMenu: [[20,50,100,500,-1],['20条','50条','100条','500条','All']], // 不显示表格信息(总条数)
                 oLanguage: window._table_i18n,
+                dom: window._table_sdom,
                 bStateSave: true,
+                buttons: window._table_button,
                 initComplete: function () {
                     var id = $(this[0]).attr('id');
                     var data = JSON.parse( localStorage['DataTables_'+id+'_'+location.pathname] );
@@ -162,6 +211,7 @@
                         }
 
                         $(el).on('keyup change', function () {
+                            if(window._pause_datatables) return;
                             if ($(this).val() == column.search()) return;
                             var v = $(this).val();
                             var regex = false;
